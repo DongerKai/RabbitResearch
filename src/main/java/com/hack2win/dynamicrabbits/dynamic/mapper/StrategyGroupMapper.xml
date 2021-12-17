@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hack2win.dynamicrabbits.dynamic.mapper.StrategyGroupMapper">
+    <!--       策略信息mapper -->
+
+    <resultMap id="baseSystemGroupResultMap" type="com.hack2win.dynamicrabbits.dynamic.entity.SystemGroup">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="systemName" jdbcType="VARCHAR" property="systemName"/>
+        <result column="systemInfo" jdbcType="VARCHAR" property="systemInfo"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="isDelete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="isEnable" jdbcType="INTEGER" property="isDelete"/>
+
+    </resultMap>
+    <sql id="userSql">
+        id
+        ,systemName,systemInfo,description,description,isDelete,isEnable
+    </sql>
+
+    <!-- 查询策略信息 -->
+    <select id="selectSystemGroupListById" parameterType="com.hack2win.dynamicrabbits.dynamic.entity.SystemGroup"
+            resultMap="baseSystemGroupResultMap">
+        SELECT id, systemName, systemInfo, description, isDelete, isEnable
+        FROM hackthon1359.systemgroup
+        where 1 = 1
+    </select>
+
+    <!-- 插入策略信息 -->
+    <insert id="insertSystemGroupById" parameterType="com.hack2win.dynamicrabbits.dynamic.entity.SystemGroup">
+        INSERT INTO hackthon1359.systemgroup
+            (systemName, systemInfo, description, isDelete, isEnable)
+        VALUES (#{systemName}, #{systemInfo}, #{description}, #{isDelete}, #{isEnable});
+    </insert>
+
+    <!--修改策略数据-->
+    <update id="updateSystemGroupById" parameterType="com.hack2win.dynamicrabbits.dynamic.entity.SystemGroup">
+        UPDATE
+            hackthon1359.systemgroup
+        SET systemName=#{systemName},
+            systemInfo=#{systemInfo},
+            description=#{description},
+            isDelete=#{isDelete},
+            isEnable=#{isEnable}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除策略信息-->
+    <delete id="deleteSystemGroupById" parameterType="java.lang.Integer">
+        DELETE
+        FROM hackthon1359.systemgroup
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

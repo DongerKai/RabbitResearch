@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.hack2win.dynamicrabbits.dynamic.mapper.StrategyMapper">
+    <!--       策略信息mapper -->
+
+    <resultMap id="baseStrategyResultMap" type="com.hack2win.dynamicrabbits.dynamic.entity.Strategy">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="topic" jdbcType="VARCHAR" property="topic"/>
+        <result column="routingName" jdbcType="VARCHAR" property="routingName"/>
+        <result column="bindingQueue" jdbcType="VARCHAR" property="bindingQueue"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="isCache" jdbcType="VARCHAR" property="isCache"/>
+        <result column="isDelete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="isEnable" jdbcType="INTEGER" property="isDelete"/>
+        <result column="remainRetryTimes" jdbcType="INTEGER" property="remainRetryTimes"/>
+    </resultMap>
+    <sql id="userSql">
+        id
+        ,topic,routingName,bindingQueue,description,isCache,isDelete,isEnable
+    </sql>
+
+    <!-- 查询策略信息 -->
+    <select id="selectStrategyListById" parameterType="String"
+            resultType="com.hack2win.dynamicrabbits.dynamic.entity.Strategy">
+        SELECT id, topic, routingName, bindingQueue, description, isCache, isEnable
+        FROM hackthon1359.strategy
+        where
+        <if test="topic!=null and topic != ''">
+            topic = #{topic} and
+        </if>
+        1=1
+    </select>
+
+    <!-- 插入策略信息 -->
+    <insert id="insertStrategyById" parameterType="com.hack2win.dynamicrabbits.dynamic.entity.Strategy">
+        INSERT INTO hackthon1359.strategy
+            (topic, routingName, bindingQueue, description, isCache, isEnable)
+        VALUES (#{topic}, #{routingName}, #{bindingQueue}, #{description}, #{isCache}, #{isEnable});
+    </insert>
+
+    <!--修改策略数据-->
+    <update id="updateStrategyById" parameterType="com.hack2win.dynamicrabbits.dynamic.entity.Strategy">
+
+        UPDATE hackthon1359.strategy
+        SET topic=#{topic},
+            routingName=#{routingName},
+            bindingQueue=#{bindingQueue},
+            description=#{description},
+            isCache=#{isCache},
+            isEnable=#{isEnable}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除策略信息-->
+    <delete id="deleteStrategyById">
+        DELETE
+        FROM hackthon1359.strategy
+        WHERE topic = #{topic}
+        AND bindingQueue =#{bindingQueue}
+    </delete>
+
+</mapper>

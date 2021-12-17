@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hack2win.dynamicrabbits.dynamic.mapper.MessageRecordMapper">
+    <!--     消息记录mapper -->
+    <resultMap id="baseMessageRecordResultMap" type="com.hack2win.dynamicrabbits.dynamic.entity.MessageRecord">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="publishStatus" jdbcType="VARCHAR" property="publishStatus"/>
+        <result column="remainRetryCount" jdbcType="INTEGER" property="remainRetryCount"/>
+        <result column="cause" jdbcType="VARCHAR" property="cause"/>
+        <result column="exchangeName" jdbcType="VARCHAR" property="exchangeName"/>
+        <result column="rountingKey" jdbcType="VARCHAR" property="rountingKey"/>
+        <result column="message" jdbcType="VARCHAR" property="message"/>
+        <result column="createDate" jdbcType="DATE" property="createDate"/>
+        <result column="modifyDate" jdbcType="DATE" property="modifyDate"/>
+    </resultMap>
+
+    <sql id="messageRecordSql">
+        id,publishStatus,remainRetryCount,cause,exchangeName,rountingKey,message,createDate,modifyDate
+    </sql>
+
+    <!-- 查询所有消息记录 -->
+    <select id="selectMessageRecordList" resultMap="baseMessageRecordResultMap">
+        SELECT <include refid="messageRecordSql"/>
+        FROM hackthon1359.messagerecord
+    </select>
+
+    <!-- 插入消息记录 -->
+    <insert id="insertMessageRecord" parameterType="com.hack2win.dynamicrabbits.dynamic.entity.MessageRecord">
+        INSERT INTO hackthon1359.messagerecord
+            (publishStatus,remainRetryCount,cause,exchangeName,rountingKey,message,createDate,modifyDate)
+        VALUES (#{publishStatus}, #{remainRetryCount}, #{cause}, #{exchangeName}, #{rountingKey}, #{message}, #{createDate}, #{modifyDate});
+    </insert>
+
+    <!--修改消息记录-->
+    <update id="updateMessageRecord" parameterType="com.hack2win.dynamicrabbits.dynamic.entity.MessageRecord">
+        UPDATE
+            hackthon1359.messagerecord
+        SET publishStatus=#{publishStatus}
+          , remainRetryCount=#{remainRetryCount}
+          , cause=#{cause}
+          , exchangeName=#{exchangeName}
+          , rountingKey=#{rountingKey}
+          , message=#{message}
+          , createDate=#{createDate}
+          , modifyDate=#{modifyDate}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除消息记录-->
+    <delete id="deleteMessageRecordByIdList" parameterType="java.lang.Long">
+        DELETE
+        FROM hackthon1359.messagerecord
+        WHERE
+        <foreach collection="idList" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 查询待重发的消息记录-->
+    <select id="selectRetryMessageRecordList" resultMap="baseMessageRecordResultMap">
+        SELECT <include refid="messageRecordSql"/>
+        FROM hackthon1359.messagerecord
+        WHERE remainRetryCount > 0 and publishStatus = '2'
+    </select>
+
+</mapper>
